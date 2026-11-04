@@ -11,6 +11,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.foundation.layout.WindowInsets
@@ -187,20 +192,79 @@ val LocalMainPagerState = staticCompositionLocalOf<MainPagerState> { error("Loca
 private fun PackagesPager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
     val viewModel: com.lingyue.layerbridge.ui.MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    var graphMode by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
+    var menuOpen by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
     val scrollBehavior = top.yukonga.miuix.kmp.basic.MiuixScrollBehavior()
+    val picker = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.OpenMultipleDocuments(),
+    ) { uris -> viewModel.installFromUris(uris) }
+
     top.yukonga.miuix.kmp.basic.Scaffold(
         topBar = {
             top.yukonga.miuix.kmp.basic.TopAppBar(
                 title = stringResource(com.example.kernelsustyleuikit.R.string.nav_packages),
                 scrollBehavior = scrollBehavior,
+                actions = {
+                    androidx.compose.foundation.layout.Box {
+                        top.yukonga.miuix.kmp.basic.IconButton(onClick = { menuOpen = true }) {
+                            com.lingyue.layerbridge.ui.components.MenuIcon(
+                                tint = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.onSurface,
+                            )
+                        }
+                        top.yukonga.miuix.kmp.overlay.OverlayListPopup(
+                            show = menuOpen,
+                            popupPositionProvider = top.yukonga.miuix.kmp.basic.ListPopupDefaults.DropdownPositionProvider,
+                            alignment = top.yukonga.miuix.kmp.basic.PopupPositionProvider.Align.End,
+                            onDismissRequest = { menuOpen = false },
+                        ) {
+                            top.yukonga.miuix.kmp.basic.ListPopupColumn {
+                                top.yukonga.miuix.kmp.basic.DropdownImpl(
+                                    text = if (graphMode) "卡片流" else "依赖图",
+                                    optionSize = 3,
+                                    isSelected = graphMode,
+                                    index = 0,
+                                    onSelectedIndexChange = { graphMode = !graphMode; menuOpen = false },
+                                )
+                                top.yukonga.miuix.kmp.basic.DropdownImpl(
+                                    text = "刷新",
+                                    optionSize = 3,
+                                    isSelected = false,
+                                    index = 1,
+                                    onSelectedIndexChange = { viewModel.refreshInstalled(); menuOpen = false },
+                                )
+                                top.yukonga.miuix.kmp.basic.DropdownImpl(
+                                    text = "修复环境",
+                                    optionSize = 3,
+                                    isSelected = false,
+                                    index = 2,
+                                    onSelectedIndexChange = { viewModel.repairEnvironment(); menuOpen = false },
+                                )
+                            }
+                        }
+                    }
+                },
             )
+        },
+        floatingActionButton = {
+            if (!graphMode) {
+                top.yukonga.miuix.kmp.basic.FloatingActionButton(
+                    onClick = { picker.launch(arrayOf("*/*")) },
+                ) {
+                    top.yukonga.miuix.kmp.basic.Icon(
+                        androidx.compose.material.icons.Icons.Rounded.Add,
+                        contentDescription = "install",
+                        modifier = androidx.compose.ui.Modifier.size(32.dp),
+                        tint = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.onPrimary,
+                    )
+                }
+            }
         },
         containerColor = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.surface,
     ) { innerPadding ->
         com.lingyue.layerbridge.ui.PackagesPage(
             state = state,
             viewModel = viewModel,
-            graphMode = false,
+            graphMode = graphMode,
             modifier = androidx.compose.ui.Modifier
                 .padding(innerPadding)
                 .padding(bottom = bottomInnerPadding)
