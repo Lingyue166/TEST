@@ -11,6 +11,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
@@ -185,12 +187,26 @@ val LocalMainPagerState = staticCompositionLocalOf<MainPagerState> { error("Loca
 private fun PackagesPager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
     val viewModel: com.lingyue.layerbridge.ui.MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
-    com.lingyue.layerbridge.ui.PackagesPage(
-        state = state,
-        viewModel = viewModel,
-        graphMode = false,
-        modifier = androidx.compose.ui.Modifier.padding(bottom = bottomInnerPadding),
-    )
+    val scrollBehavior = top.yukonga.miuix.kmp.basic.MiuixScrollBehavior()
+    top.yukonga.miuix.kmp.basic.Scaffold(
+        topBar = {
+            top.yukonga.miuix.kmp.basic.TopAppBar(
+                title = stringResource(com.example.kernelsustyleuikit.R.string.nav_packages),
+                scrollBehavior = scrollBehavior,
+            )
+        },
+        containerColor = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.surface,
+    ) { innerPadding ->
+        com.lingyue.layerbridge.ui.PackagesPage(
+            state = state,
+            viewModel = viewModel,
+            graphMode = false,
+            modifier = androidx.compose.ui.Modifier
+                .padding(innerPadding)
+                .padding(bottom = bottomInnerPadding)
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
+        )
+    }
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
