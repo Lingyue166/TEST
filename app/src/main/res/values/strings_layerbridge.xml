@@ -1,0 +1,142 @@
+<resources>
+
+    <string name="action_update_index">Update index</string>
+    <string name="action_init">Init</string>
+    <string name="action_init_prefix">Initialize prefix</string>
+    <string name="action_refresh">Refresh</string>
+
+    <string name="tab_packages">Packages</string>
+    <string name="tab_environment">Environment</string>
+    <string name="tab_icon_packages">P</string>
+    <string name="tab_icon_environment">E</string>
+
+    <string name="search_hint">Search package / description</string>
+    <string name="status_summary">Index %1$d · Installed %2$d</string>
+    <string name="status_verified"> · index verified</string>
+    <string name="badge_installed"> · installed</string>
+
+    <string name="action_install">Install</string>
+    <string name="action_uninstall">Uninstall</string>
+
+    <string name="root_section">Root</string>
+    <string name="root_detecting">Detecting…</string>
+    <string name="root_granted">Granted</string>
+    <string name="root_granted_managers">Granted (%1$s)</string>
+    <string name="root_no_manager">No root manager detected</string>
+    <string name="root_not_granted">Not granted: authorize in %1$s</string>
+
+    <string name="env_section">Environment</string>
+    <string name="env_prefix">Prefix: %1$s</string>
+    <string name="env_installed">Installed: %1$d packages</string>
+    <string name="env_index_verified">Index: verified</string>
+    <string name="env_index_unverified">Index: unverified</string>
+
+    <string name="dev_section">Developer options</string>
+    <string name="dev_require_signature">Require signed packages</string>
+    <string name="dev_malware_scan">Automatic malware scan</string>
+    <string name="dev_note">Structure checks still run when disabled; bad signatures are still rejected.</string>
+
+    <string name="msg_index_updating">Updating index…</string>
+    <string name="msg_index_loaded">Index: %1$d packages</string>
+    <string name="msg_index_loaded_verified">Index: %1$d packages (verified)</string>
+    <string name="msg_index_failed">Update failed: %1$s</string>
+    <string name="msg_installing">Installing %1$s</string>
+    <string name="msg_downloading">Downloading %1$s: %2$d%%</string>
+    <string name="msg_install_failed">Install failed, see log</string>
+    <string name="msg_install_done">Install complete</string>
+    <string name="msg_uninstalling">Uninstalling %1$s</string>
+    <string name="msg_uninstalled">Uninstalled %1$s</string>
+    <string name="msg_uninstall_failed">Uninstall failed: %1$s</string>
+
+    <string name="language_section">Language</string>
+    <string name="language_system">Follow system</string>
+    <string name="language_zh">中文</string>
+    <string name="language_en">English</string>
+    <string name="msg_busy">Another install is running, try again later</string>
+    <string name="msg_no_repo">No package source configured</string>
+
+    <string name="dash_system">System</string>
+    <string name="dash_root">Root</string>
+    <string name="dash_checking">Checking</string>
+    <string name="dash_granted">Granted</string>
+    <string name="dash_denied">Not granted</string>
+    <string name="dash_prefix">Prefix</string>
+    <string name="dash_packages">Packages</string>
+    <string name="dash_installed">Installed</string>
+    <string name="dash_source">Source</string>
+    <string name="dash_source_none">No source configured</string>
+    <string name="dash_activity">Recent activity</string>
+    <string name="dash_no_activity">Nothing yet</string>
+    <string name="dash_refresh">Refresh</string>
+
+    <string name="dash_runtime">Runtime status</string>
+    <string name="dash_module">Module</string>
+    <string name="dash_entry">Entry</string>
+    <string name="dash_db">State DB</string>
+    <string name="dash_app">App</string>
+    <string name="dash_android">Android</string>
+    <string name="dash_ok">OK</string>
+    <string name="dash_missing">Missing</string>
+
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_packages">Packages</string>
+    <string name="pkg_search_hint">Search installed packages</string>
+    <string name="pkg_install_local">Install</string>
+    <string name="pkg_details">Details</string>
+    <string name="pkg_uninstall">Remove</string>
+    <string name="pkg_uninstall_title">Remove package</string>
+    <string name="pkg_uninstall_message">Remove %1$s? Package data is kept by default.</string>
+    <string name="pkg_cancel">Cancel</string>
+    <string name="pkg_confirm">Remove</string>
+    <string name="pkg_empty">No installed packages</string>
+    <string name="pkg_version">Version</string>
+    <string name="pkg_arch">Arch</string>
+    <string name="pkg_format">Format</string>
+    <string name="pkg_installed_at">Installed</string>
+    <string name="pkg_signer">Signer</string>
+    <string name="pkg_scan">Scan</string>
+    <string name="pkg_depends">Depends</string>
+
+    <string name="pkg_install_multiple">%1$d files selected, install all</string>
+    <string name="pkg_confirm_install">Install</string>
+
+    <string name="menu_cards">Card list</string>
+    <string name="menu_graph">Dependency graph</string>
+    <string name="menu_refresh">Refresh</string>
+
+    <string name="menu_repair_env">Repair environment</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_signature">Verify signatures</string>
+    <string name="settings_signature_summary">Reject packages without a trusted signature</string>
+    <string name="settings_malware">Malware scan</string>
+    <string name="settings_malware_summary">Scan maintainer scripts before running</string>
+    <string name="settings_maintenance">Maintenance</string>
+    <string name="settings_repair_env">Repair environment</string>
+    <string name="settings_repair_env_summary">Rebuild missing package env and wrappers</string>
+    <string name="settings_refresh">Refresh status</string>
+    <string name="settings_refresh_summary">Reload installed packages and runtime state</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version_note">LayerBridge package manager</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="dash_device">Device</string>
+    <string name="dash_project">Project home</string>
+    <string name="dash_project_summary">github.com/Lingyue166/LayerBridge</string>
+
+    <string name="home_root_granted">Root access granted</string>
+    <string name="home_root_denied">Root access denied</string>
+    <string name="home_root_manager">via %1$s</string>
+    <string name="home_root_summary">Grant root to manage packages</string>
+    <string name="home_packages_title">Packages</string>
+    <string name="home_packages_summary">%1$d installed</string>
+    <string name="home_open">Open</string>
+    <string name="home_info">Device info</string>
+    <string name="home_prefix">Prefix</string>
+    <string name="home_module">Module</string>
+    <string name="home_entry">Entry</string>
+    <string name="home_db">State DB</string>
+
+    <string name="home_hero_summary">Package manager is ready</string>
+</resources>

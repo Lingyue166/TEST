@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
@@ -180,6 +181,18 @@ class MainActivity : ComponentActivity() {
 
 val LocalMainPagerState = staticCompositionLocalOf<MainPagerState> { error("LocalMainPagerState not provided") }
 
+@Composable
+private fun PackagesPager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
+    val viewModel: com.lingyue.layerbridge.ui.MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    com.lingyue.layerbridge.ui.PackagesPage(
+        state = state,
+        viewModel = viewModel,
+        graphMode = false,
+        modifier = androidx.compose.ui.Modifier.padding(bottom = bottomInnerPadding),
+    )
+}
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
@@ -251,6 +264,7 @@ fun MainScreen(
                     when (page) {
                         0 -> if (isCurrentPage || contentReady) HomePager(navController, bottomInnerPadding, isCurrentPage)
                         1 -> if (isCurrentPage || contentReady) SettingPager(navController, bottomInnerPadding)
+                        2 -> if (isCurrentPage || contentReady) PackagesPager(bottomInnerPadding)
                     }
                 }
             }

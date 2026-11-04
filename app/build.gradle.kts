@@ -26,6 +26,12 @@ apksign {
 }
 
 android {
+    packaging {
+        resources {
+            excludes += setOf("META-INF/LICENSE.md", "META-INF/LICENSE-notice.md", "META-INF/NOTICE.md")
+        }
+    }
+
     namespace = "com.example.kernelsustyleuikit"
     val isPrBuild = project.findProperty("IS_PR_BUILD")?.toString()?.toBoolean() ?: false
 
@@ -134,6 +140,13 @@ dependencies {
     implementation(libs.androidx.navigationevent.compose)
 
     implementation(libs.kotlinx.coroutines.core)
+    implementation(files("libs/gson-2.11.0.jar"))
+    implementation(files("libs/bcpg-jdk18on-1.86.jar"))
+    implementation(files("libs/bcpkix-jdk18on-1.79.jar"))
+    implementation(files("libs/bcprov-jdk18on-1.86.jar"))
+    implementation(files("libs/bcutil-jdk18on-1.86.jar"))
+    implementation(files("libs/commons-compress-1.27.1.jar"))
+    implementation(files("libs/xz-1.12.jar"))
 
     implementation(libs.commonmark)
     implementation(libs.commonmark.ext.gfm.tables)
