@@ -189,30 +189,6 @@ class MainActivity : ComponentActivity() {
 val LocalMainPagerState = staticCompositionLocalOf<MainPagerState> { error("LocalMainPagerState not provided") }
 
 @Composable
-private fun LayerBridgeHomePager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
-    val viewModel: com.lingyue.layerbridge.ui.MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-    val state by viewModel.state.collectAsStateWithLifecycle()
-    val scrollBehavior = top.yukonga.miuix.kmp.basic.MiuixScrollBehavior()
-    top.yukonga.miuix.kmp.basic.Scaffold(
-        topBar = {
-            top.yukonga.miuix.kmp.basic.TopAppBar(
-                title = "LayerBridge",
-                scrollBehavior = scrollBehavior,
-            )
-        },
-        containerColor = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.surface,
-    ) { innerPadding ->
-        com.lingyue.layerbridge.ui.HomePage(
-            state = state,
-            modifier = androidx.compose.ui.Modifier
-                .padding(innerPadding)
-                .padding(bottom = bottomInnerPadding)
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
-        )
-    }
-}
-
-@Composable
 private fun PackagesPager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
     val viewModel: com.lingyue.layerbridge.ui.MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -366,7 +342,7 @@ fun MainScreen(
                 ) { page ->
                     val isCurrentPage = page == settledPage
                     when (page) {
-                        0 -> if (isCurrentPage || contentReady) LayerBridgeHomePager(bottomInnerPadding)
+                        0 -> if (isCurrentPage || contentReady) HomePager(navController, bottomInnerPadding, isCurrentPage)
                         1 -> if (isCurrentPage || contentReady) PackagesPager(bottomInnerPadding)
                         2 -> if (isCurrentPage || contentReady) SettingPager(navController, bottomInnerPadding)
                     }
