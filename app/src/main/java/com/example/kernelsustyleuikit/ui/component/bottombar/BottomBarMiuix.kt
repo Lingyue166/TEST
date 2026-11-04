@@ -120,6 +120,6 @@ enum class BottomBarDestination(
     val icon: ImageVector,
 ) {
     Home(R.string.home, Icons.Rounded.Cottage),
-    Setting(R.string.settings, Icons.Rounded.Settings),
-    Packages(R.string.nav_packages, Icons.Rounded.Apps)
+    Packages(R.string.nav_packages, Icons.Rounded.Apps),
+    Setting(R.string.settings, Icons.Rounded.Settings)
 }

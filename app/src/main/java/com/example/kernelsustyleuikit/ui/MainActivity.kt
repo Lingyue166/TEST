@@ -343,8 +343,8 @@ fun MainScreen(
                     val isCurrentPage = page == settledPage
                     when (page) {
                         0 -> if (isCurrentPage || contentReady) HomePager(navController, bottomInnerPadding, isCurrentPage)
-                        1 -> if (isCurrentPage || contentReady) SettingPager(navController, bottomInnerPadding)
-                        2 -> if (isCurrentPage || contentReady) PackagesPager(bottomInnerPadding)
+                        1 -> if (isCurrentPage || contentReady) PackagesPager(bottomInnerPadding)
+                        2 -> if (isCurrentPage || contentReady) SettingPager(navController, bottomInnerPadding)
                     }
                 }
             }
