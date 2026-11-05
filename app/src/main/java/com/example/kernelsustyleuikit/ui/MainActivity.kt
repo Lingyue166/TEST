@@ -7,6 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.kernelsustyleuikit.BuildConfig
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -169,9 +172,24 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    when (uiMode) {
-                        UiMode.Material -> androidx.compose.material3.Scaffold { navDisplay() }
-                        UiMode.Miuix -> Scaffold { navDisplay() }
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .then(
+                                if (uiMode == UiMode.Miuix) {
+                                    Modifier.background(top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.surface)
+                                } else {
+                                    Modifier.background(androidx.compose.material3.MaterialTheme.colorScheme.surface)
+                                }
+                            )
+                    ) {
+                        when (uiMode) {
+                            UiMode.Material -> androidx.compose.material3.Scaffold { navDisplay() }
+                            UiMode.Miuix -> Scaffold { navDisplay() }
+                        }
+                        if (BuildConfig.DEBUG) {
+                            com.example.kernelsustyleuikit.ui.debug.DebugElementInspector()
+                        }
                     }
                 }
             }
