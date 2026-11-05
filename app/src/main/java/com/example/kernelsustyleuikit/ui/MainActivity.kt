@@ -207,10 +207,13 @@ class MainActivity : ComponentActivity() {
 val LocalMainPagerState = staticCompositionLocalOf<MainPagerState> { error("LocalMainPagerState not provided") }
 
 @Composable
-private fun PackagesPager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
+private fun PackagesPager(
+    bottomInnerPadding: androidx.compose.ui.unit.Dp,
+    graphMode: Boolean,
+    onGraphModeChange: (Boolean) -> Unit,
+) {
     val viewModel: com.lingyue.layerbridge.ui.MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var graphMode by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
     var menuOpen by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
     val scrollBehavior = top.yukonga.miuix.kmp.basic.MiuixScrollBehavior()
     val picker = androidx.activity.compose.rememberLauncherForActivityResult(
@@ -241,7 +244,7 @@ private fun PackagesPager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
                                     optionSize = 3,
                                     isSelected = graphMode,
                                     index = 0,
-                                    onSelectedIndexChange = { graphMode = !graphMode; menuOpen = false },
+                                    onSelectedIndexChange = { onGraphModeChange(!graphMode); menuOpen = false },
                                 )
                                 top.yukonga.miuix.kmp.basic.DropdownImpl(
                                     text = "刷新",
@@ -288,8 +291,9 @@ private fun PackagesPager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
             viewModel = viewModel,
             graphMode = graphMode,
             modifier = androidx.compose.ui.Modifier
+                .fillMaxSize()
+                .background(top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.surface)
                 .padding(innerPadding)
-                .padding(bottom = bottomInnerPadding)
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
         )
     }
@@ -307,6 +311,9 @@ fun MainScreen(
     val enableFloatingBottomBar = LocalEnableFloatingBottomBar.current
     val enableFloatingBottomBarBlur = LocalEnableFloatingBottomBarBlur.current
     val useNavigationRail = useNavigationRail(enableFloatingBottomBar)
+    var graphMode by androidx.compose.runtime.saveable.rememberSaveable {
+        androidx.compose.runtime.mutableStateOf(false)
+    }
     val pagerState = rememberPagerState(initialPage = initialPage, pageCount = { MainPagerConfig.PAGE_COUNT })
     val mainPagerState = rememberMainPagerState(pagerState, animatePageChanges = !useNavigationRail)
     val pagerMode = PagerInterceptionMode.entries.getOrElse(pagerInterceptionMode) { PagerInterceptionMode.Native }
@@ -343,12 +350,21 @@ fun MainScreen(
             Box(modifier = if (blurBackdrop != null) Modifier.layerBackdrop(blurBackdrop) else Modifier) {
                 HorizontalPager(
                     modifier = Modifier
-                        .pagerGestureOverride(pagerState = mainPagerState.pagerState, mode = pagerMode)
+                        .then(
+                            if (graphMode) {
+                                androidx.compose.ui.Modifier
+                            } else {
+                                androidx.compose.ui.Modifier.pagerGestureOverride(
+                                    pagerState = mainPagerState.pagerState,
+                                    mode = pagerMode,
+                                )
+                            }
+                        )
                         .then(if (enableFloatingBottomBar && enableFloatingBottomBarBlur) Modifier.layerBackdrop(backdrop) else Modifier),
                     state = mainPagerState.pagerState,
                     beyondViewportPageCount = if (contentReady) 1 else 0,
                     overscrollEffect = null,
-                    userScrollEnabled = !interceptPagerGestures,
+                    userScrollEnabled = !interceptPagerGestures && !graphMode,
                     pageNestedScrollConnection = if (interceptPagerGestures) {
                         PagerGestureNestedScrollConnection
                     } else {
@@ -365,8 +381,15 @@ fun MainScreen(
                     val isCurrentPage = page == settledPage
                     when (page) {
                         0 -> if (isCurrentPage || contentReady) HomePager(navController, bottomInnerPadding, isCurrentPage)
-                        1 -> if (isCurrentPage || contentReady) PackagesPager(bottomInnerPadding)
+                        1 -> if (isCurrentPage || contentReady) {
+                            PackagesPager(
+                                bottomInnerPadding = bottomInnerPadding,
+                                graphMode = graphMode,
+                                onGraphModeChange = { graphMode = it },
+                            )
+                        }
                         2 -> if (isCurrentPage || contentReady) SettingPager(navController, bottomInnerPadding)
+                        3 -> if (isCurrentPage || contentReady) com.example.kernelsustyleuikit.ui.screen.test.TestScreen()
                     }
                 }
             }

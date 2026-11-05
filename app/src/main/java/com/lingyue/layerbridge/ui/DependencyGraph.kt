@@ -170,17 +170,25 @@ internal fun DependencyGraph(state: UiState, viewModel: MainViewModel, modifier:
                     val endX = with(density) { (end.first + PAD_DP).dp.toPx() }
                     val endY = with(density) { (end.second + PAD_DP).dp.toPx() }
                     val inTree = layout.nodes.any {
-                        it.x + it.width == start.first &&
-                            it.y + it.height / 2 == start.second &&
+                        it.x + it.width / 2 == start.first &&
+                            it.y + it.height == start.second &&
                             it.id in shownSet
                     } && layout.nodes.any {
-                        it.x == end.first &&
-                            it.y + it.height / 2 == end.second &&
+                        it.x + it.width / 2 == end.first &&
+                            it.y == end.second &&
                             it.id in shownSet
                     }
                     val dimAlpha = 1f - 0.85f * highlightProgress.value
-                    val color = if (inTree) lineColor else lineColor.copy(alpha = dimAlpha)
-                    val width = if (inTree) stroke * (1f + 0.6f * highlightProgress.value) else stroke
+                    val color = when {
+                        selected != null && inTree -> highlightColor
+                        inTree -> lineColor
+                        else -> lineColor.copy(alpha = dimAlpha)
+                    }
+                    val width = if (selected != null && inTree) {
+                        stroke * (1f + 1.2f * highlightProgress.value)
+                    } else {
+                        stroke
+                    }
                     val control = (endY - startY) / 2f
                     val path = Path()
                     path.moveTo(startX, startY)

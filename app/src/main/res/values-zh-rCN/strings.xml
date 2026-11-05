@@ -82,4 +82,5 @@
     <string name='settings_pager_gesture_ios_like'>iOS 风格</string>
     <string name='nav_rail_expand'>展开导航栏</string>
     <string name='nav_rail_collapse'>收起导航栏</string>
+    <string name="nav_test">测试</string>
 </resources>

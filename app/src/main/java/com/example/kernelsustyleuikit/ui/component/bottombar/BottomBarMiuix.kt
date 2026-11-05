@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cottage
 import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Science
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -121,5 +122,6 @@ enum class BottomBarDestination(
 ) {
     Home(R.string.home, Icons.Rounded.Cottage),
     Packages(R.string.nav_packages, Icons.Rounded.Apps),
-    Setting(R.string.settings, Icons.Rounded.Settings)
+    Setting(R.string.settings, Icons.Rounded.Settings),
+    Test(R.string.nav_test, Icons.Rounded.Science)
 }
