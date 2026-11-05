@@ -304,14 +304,6 @@ fun FloatingBottomBar(
                     tabWidthPx = (contentWidthPx / tabsCount).coerceAtLeast(0f)
                 }
                 .graphicsLayer { translationX = panelOffset }
-                .dropShadow(
-                    shape = pillShape,
-                    shadow = Shadow(
-                        radius = 10.dp,
-                        color = Color.Black,
-                        alpha = if (isInDark) 0.2f else 0.1f,
-                    ),
-                )
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
