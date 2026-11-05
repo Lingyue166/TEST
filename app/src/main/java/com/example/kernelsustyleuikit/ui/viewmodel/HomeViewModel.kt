@@ -48,7 +48,7 @@ class HomeViewModel : ViewModel() {
             currentAppVersionCode = appVersion.versionCode,
             systemInfo = SystemInfo(
                 appVersion = "${appVersion.versionName} (${appVersion.versionCode})",
-                deviceModel = resolveDeviceName(),
+                deviceModel = "${Build.MANUFACTURER} ${Build.MODEL}".trim(),
                 androidVersion = "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})",
             ),
         )

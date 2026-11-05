@@ -10,4 +10,12 @@
     <string name="lb_github">GitHub</string>
     <string name="lb_pkg_label">pkg</string>
     <string name="lb_plugin_label">Plugins</string>
+    <string name="lb_working">Working</string>
+    <string name="lb_prefix">Prefix</string>
+    <string name="lb_module">Module</string>
+    <string name="lb_entry">Entry</string>
+    <string name="lb_db">State</string>
+    <string name="lb_ok">OK</string>
+    <string name="lb_missing">Missing</string>
+    <string name="lb_status">Environment</string>
 </resources>

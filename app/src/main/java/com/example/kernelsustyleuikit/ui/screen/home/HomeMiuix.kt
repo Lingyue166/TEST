@@ -28,6 +28,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.rounded.Folder
+import androidx.compose.material.icons.rounded.Extension
+import androidx.compose.material.icons.rounded.Terminal
+import androidx.compose.material.icons.rounded.ViewList
 import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material.icons.rounded.CheckCircleOutline
 import androidx.compose.material.icons.rounded.Cancel
@@ -76,6 +80,11 @@ fun HomePagerMiuix(
     rootGranted: Boolean = false,
     installedCount: Int = 0,
     onRequestRoot: () -> Unit = {},
+    onOpenPackages: () -> Unit = {},
+    prefixOk: Boolean? = null,
+    moduleOk: Boolean? = null,
+    entryOk: Boolean? = null,
+    dbOk: Boolean? = null,
 ) {
     val scrollBehavior = MiuixScrollBehavior()
     val enableBlur = LocalEnableBlur.current
@@ -119,10 +128,16 @@ fun HomePagerMiuix(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
-                            StatCard(installedCount.toString(), stringResource(R.string.lb_pkg_label), Modifier.weight(1f))
-                            StatCard("0", stringResource(R.string.lb_plugin_label), Modifier.weight(1f))
+                            StatCard(installedCount.toString(), stringResource(R.string.lb_pkg_label), Modifier.weight(1f), onOpenPackages)
+                            StatCard("0", stringResource(R.string.lb_plugin_label), Modifier.weight(1f), null)
                         }
-                        InfoCard(systemInfo = state.systemInfo)
+                        InfoCard(
+                            systemInfo = state.systemInfo,
+                            prefixOk = prefixOk,
+                            moduleOk = moduleOk,
+                            entryOk = entryOk,
+                            dbOk = dbOk,
+                        )
                         LearnMoreCard(onOpenUrl = actions.onOpenUrl)
                     }
                     Spacer(Modifier.height(bottomInnerPadding))
@@ -134,8 +149,12 @@ fun HomePagerMiuix(
 
 // <我保证已经认真阅读过skill，确认符合设计语言以及用户要求，没有私自创建控件>
 @Composable
-private fun StatCard(value: String, label: String, modifier: Modifier) {
-    Card(modifier) {
+private fun StatCard(value: String, label: String, modifier: Modifier, onClick: (() -> Unit)?) {
+    Card(
+        modifier = modifier,
+        onClick = { onClick?.invoke() },
+        showIndication = onClick != null,
+    ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(value, style = MiuixTheme.textStyles.title2, color = colorScheme.onSurface)
             Text(label, style = MiuixTheme.textStyles.body2, color = colorScheme.onSurfaceVariantSummary)
@@ -220,12 +239,7 @@ private fun PermissionCardMiuix(
                 ) {
                     Column {
                         Text(
-                            text =
-                                if (requiredGranted) {
-                                    stringResource(R.string.permission_status_ready_title)
-                                } else {
-                                    stringResource(R.string.permission_status_missing_title)
-                                },
+                            text = stringResource(R.string.lb_working),
                             style = MiuixTheme.textStyles.title3,
                             color = textColor,
                         )
@@ -280,7 +294,13 @@ private fun LearnMoreCard(
 }
 
 @Composable
-private fun InfoCard(systemInfo: SystemInfo) {
+private fun InfoCard(
+    systemInfo: SystemInfo,
+    prefixOk: Boolean? = null,
+    moduleOk: Boolean? = null,
+    entryOk: Boolean? = null,
+    dbOk: Boolean? = null,
+) {
     @Composable
     fun InfoText(
         icon: ImageVector,
@@ -329,6 +349,26 @@ private fun InfoCard(systemInfo: SystemInfo) {
                 icon = Icons.Filled.Android,
                 title = stringResource(R.string.home_android_version),
                 content = systemInfo.androidVersion,
+            )
+            InfoText(
+                icon = Icons.Rounded.Folder,
+                title = stringResource(R.string.lb_prefix),
+                content = if (prefixOk == true) com.lingyue.layerbridge.core.LbPaths.PREFIX else stringResource(R.string.lb_missing),
+            )
+            InfoText(
+                icon = Icons.Rounded.Extension,
+                title = stringResource(R.string.lb_module),
+                content = if (moduleOk == true) stringResource(R.string.lb_ok) else stringResource(R.string.lb_missing),
+            )
+            InfoText(
+                icon = Icons.Rounded.Terminal,
+                title = stringResource(R.string.lb_entry),
+                content = if (entryOk == true) stringResource(R.string.lb_ok) else stringResource(R.string.lb_missing),
+            )
+            InfoText(
+                icon = Icons.Rounded.ViewList,
+                title = stringResource(R.string.lb_db),
+                content = if (dbOk == true) stringResource(R.string.lb_ok) else stringResource(R.string.lb_missing),
                 bottomPadding = 0.dp
             )
         }

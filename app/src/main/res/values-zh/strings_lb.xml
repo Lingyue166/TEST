@@ -10,4 +10,12 @@
     <string name="lb_github">GitHub</string>
     <string name="lb_pkg_label">包</string>
     <string name="lb_plugin_label">插件</string>
+    <string name="lb_working">工作中</string>
+    <string name="lb_prefix">前缀</string>
+    <string name="lb_module">模块</string>
+    <string name="lb_entry">入口</string>
+    <string name="lb_db">状态库</string>
+    <string name="lb_ok">正常</string>
+    <string name="lb_missing">缺失</string>
+    <string name="lb_status">环境</string>
 </resources>
