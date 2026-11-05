@@ -1,0 +1,13 @@
+<resources>
+    <string name="lb_root_on">Working</string>
+    <string name="lb_root_off">Root</string>
+    <string name="lb_grant">Grant</string>
+    <string name="lb_packages">%1$d pkg</string>
+    <string name="lb_need_root">Root required</string>
+    <string name="lb_device">Device</string>
+    <string name="lb_system">System</string>
+    <string name="lb_repo">Repo</string>
+    <string name="lb_github">GitHub</string>
+    <string name="lb_pkg_label">pkg</string>
+    <string name="lb_plugin_label">Plugins</string>
+</resources>

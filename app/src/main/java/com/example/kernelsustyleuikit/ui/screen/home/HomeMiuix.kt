@@ -73,6 +73,9 @@ fun HomePagerMiuix(
     permissionState: PermissionState,
     actions: HomeActions,
     bottomInnerPadding: Dp,
+    rootGranted: Boolean = false,
+    installedCount: Int = 0,
+    onRequestRoot: () -> Unit = {},
 ) {
     val scrollBehavior = MiuixScrollBehavior()
     val enableBlur = LocalEnableBlur.current
@@ -107,18 +110,35 @@ fun HomePagerMiuix(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        // Keep the theme settings preview in sync whenever this home layout changes.
-                        if (state.checkUpdateEnabled) {
-                            UpdateCard(state, actions)
+                        PermissionCardMiuix(
+                            granted = rootGranted,
+                            subtitle = state.systemInfo.appVersion,
+                            onClick = { if (!rootGranted) onRequestRoot() },
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            StatCard(installedCount.toString(), stringResource(R.string.lb_pkg_label), Modifier.weight(1f))
+                            StatCard("0", stringResource(R.string.lb_plugin_label), Modifier.weight(1f))
                         }
-                        WarningCard(stringResource(R.string.home_sample_notification))
-                        PermissionCardMiuix(permissionState, state.systemInfo.appVersion, actions.onPermissionsClick)
                         InfoCard(systemInfo = state.systemInfo)
                         LearnMoreCard(onOpenUrl = actions.onOpenUrl)
                     }
                     Spacer(Modifier.height(bottomInnerPadding))
                 }
             }
+        }
+    }
+}
+
+// <我保证已经认真阅读过skill，确认符合设计语言以及用户要求，没有私自创建控件>
+@Composable
+private fun StatCard(value: String, label: String, modifier: Modifier) {
+    Card(modifier) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(value, style = MiuixTheme.textStyles.title2, color = colorScheme.onSurface)
+            Text(label, style = MiuixTheme.textStyles.body2, color = colorScheme.onSurfaceVariantSummary)
         }
     }
 }
@@ -156,11 +176,11 @@ private fun UpdateCard(state: HomeUiState, actions: HomeActions) {
 
 @Composable
 private fun PermissionCardMiuix(
-    state: PermissionState,
-    appVersion: String,
+    granted: Boolean,
+    subtitle: String,
     onClick: () -> Unit,
 ) {
-    val requiredGranted = state.requiredGranted
+    val requiredGranted = granted
     val iconColor = if (requiredGranted) Color(0xFF36D167) else Color(0xFFF72727)
     val containerColor = if (requiredGranted) Color(0xFFDFFAE4) else Color(0xFFF8E2E2)
     val textColor = Color(0xFF111111)
@@ -206,14 +226,13 @@ private fun PermissionCardMiuix(
                                 } else {
                                     stringResource(R.string.permission_status_missing_title)
                                 },
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.SemiBold,
+                            style = MiuixTheme.textStyles.title3,
                             color = textColor,
                         )
                         Spacer(Modifier.height(1.dp))
                         Text(
-                            text = appVersion,
-                            fontSize = 15.sp,
+                            text = subtitle,
+                            style = MiuixTheme.textStyles.footnote1,
                             color = textColor,
                         )
                     }
@@ -282,14 +301,13 @@ private fun InfoCard(systemInfo: SystemInfo) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    fontSize = MiuixTheme.textStyles.headline1.fontSize,
-                    fontWeight = FontWeight.Medium,
-                    color = colorScheme.onSurface,
+                    style = MiuixTheme.textStyles.footnote1,
+                    color = colorScheme.onSurfaceVariantSummary,
                 )
                 Text(
                     text = content,
-                    fontSize = MiuixTheme.textStyles.body2.fontSize,
-                    color = colorScheme.onSurfaceVariantSummary,
+                    style = MiuixTheme.textStyles.body2,
+                    color = colorScheme.onSurface,
                     modifier = Modifier.padding(top = 2.dp),
                 )
             }

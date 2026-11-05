@@ -26,6 +26,8 @@ fun HomePager(
     isCurrentPage: Boolean = true
 ) {
     val viewModel = viewModel<HomeViewModel>()
+    val engineVm: com.lingyue.layerbridge.ui.MainViewModel = viewModel()
+    val engineState by engineVm.state.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -60,6 +62,9 @@ fun HomePager(
             permissionState = permissionState,
             actions = actions,
             bottomInnerPadding = bottomInnerPadding,
+            rootGranted = engineState.root?.granted == true,
+            installedCount = engineState.installed.size,
+            onRequestRoot = { engineVm.requestRoot(); engineVm.refreshRuntime() },
         )
 
         UiMode.Material -> HomePagerMaterial(

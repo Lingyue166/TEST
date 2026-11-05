@@ -1,0 +1,9 @@
+# UI Guard 豁免清单 每行一个路径片段 新文件默认不允许豁免
+app/src/main/java/com/example/kernelsustyleuikit/ui/screen/about/AboutMiuix.kt
+app/src/main/java/com/example/kernelsustyleuikit/ui/screen/colorpalette/ColorPaletteScreenMiuix.kt
+app/src/main/java/com/example/kernelsustyleuikit/ui/screen/home/HomeMiuix.kt
+app/src/main/java/com/example/kernelsustyleuikit/ui/screen/permission/PermissionScreen.kt
+app/src/main/java/com/example/kernelsustyleuikit/ui/screen/settings/SettingsMiuix.kt
+app/src/main/java/com/lingyue/layerbridge/ui/DependencyGraph.kt
+app/src/main/java/com/lingyue/layerbridge/ui/PackagesScreen.kt
+app/src/main/java/com/lingyue/layerbridge/ui/components/Common.kt

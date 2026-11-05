@@ -1,0 +1,13 @@
+<resources>
+    <string name="lb_root_on">工作中</string>
+    <string name="lb_root_off">未授权</string>
+    <string name="lb_grant">授权</string>
+    <string name="lb_packages">%1$d 包</string>
+    <string name="lb_need_root">需要 Root</string>
+    <string name="lb_device">设备</string>
+    <string name="lb_system">系统</string>
+    <string name="lb_repo">项目</string>
+    <string name="lb_github">GitHub</string>
+    <string name="lb_pkg_label">包</string>
+    <string name="lb_plugin_label">插件</string>
+</resources>

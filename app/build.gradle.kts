@@ -185,3 +185,64 @@ kotlin {
         )
     }
 }
+
+// UI Guard: 页面禁止直接使用 Miuix 原始控件 必须走控件库封装
+val uiGuard by tasks.registering {
+    val scanDirs = listOf(
+        file("src/main/java/com/example/kernelsustyleuikit/ui/screen"),
+        file("src/main/java/com/lingyue/layerbridge/ui"),
+    )
+    val allowFile = rootProject.file("ui-guard-allow.txt")
+    doLast {
+        val banned = Regex("""^\s*import\s+top\.yukonga\.miuix""", RegexOption.MULTILINE)
+        val allow = if (allowFile.exists()) allowFile.readLines().map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") } else emptyList()
+        val violations = scanDirs.filter { it.exists() }
+            .flatMap { dir -> dir.walkTopDown().filter { it.isFile && it.extension == "kt" }.toList() }
+            .filter { f -> allow.none { token -> f.path.replace('\\','/').contains(token) } }
+            .filter { f -> banned.containsMatchIn(f.readText()) }
+        if (violations.isNotEmpty()) {
+            throw GradleException(
+                "UI Guard: 页面禁止直接 import Miuix 原始控件 请先封装到 com.lingyue.ksui 或组件层\n" +
+                    violations.joinToString("\n") { " - " + it.path }
+            )
+        }
+    }
+}
+tasks.matching { it.name == "preBuild" }.configureEach { dependsOn(uiGuard) }
+
+// UI 注释守卫: 每个 @Composable 控件上方必须带设计保证注释 否则编译失败
+val uiAnnotationGuard by tasks.registering {
+    val marker = "<我保证已经认真阅读过skill，确认符合设计语言以及用户要求，没有私自创建控件>"
+    val scanDirs = listOf(
+        file("src/main/java/com/example/kernelsustyleuikit/ui"),
+        file("src/main/java/com/lingyue/layerbridge/ui"),
+    )
+    val allowFile = rootProject.file("ui-annotation-allow.txt")
+    doLast {
+        val allow = if (allowFile.exists()) allowFile.readLines().map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") } else emptyList()
+        val violations = mutableListOf<String>()
+        scanDirs.filter { it.exists() }.forEach { dir ->
+            dir.walkTopDown().filter { it.isFile && it.extension == "kt" }.forEach { f ->
+                val normalized = f.path.replace('\\','/')
+                if (allow.any { normalized.contains(it) }) return@forEach
+                val lines = f.readLines()
+                lines.forEachIndexed { index, line ->
+                    if (line.trim().startsWith("@Composable")) {
+                        val from = (index - 15).coerceAtLeast(0)
+                        val hasMarker = lines.subList(from, index + 1).any { it.contains(marker) }
+                        if (!hasMarker) {
+                            val fnLine = lines.drop(index + 1).firstOrNull { it.contains("fun ") }?.trim().orEmpty()
+                            violations += "$normalized:${index + 1} $fnLine"
+                        }
+                    }
+                }
+            }
+        }
+        if (violations.isNotEmpty()) {
+            throw GradleException(
+                "UI 注释守卫: 以下 @Composable 控件缺少设计保证注释\n$marker\n" + violations.joinToString("\n") { " - $it" }
+            )
+        }
+    }
+}
+tasks.matching { it.name == "preBuild" }.configureEach { dependsOn(uiAnnotationGuard) }

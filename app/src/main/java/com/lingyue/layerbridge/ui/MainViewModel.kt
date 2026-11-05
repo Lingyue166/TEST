@@ -194,6 +194,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun requestRoot() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) { com.lingyue.layerbridge.core.Shell.exec("id") }
+        }
+    }
+
     fun refreshRuntime() {
         viewModelScope.launch {
             val info = withContext(Dispatchers.IO) {

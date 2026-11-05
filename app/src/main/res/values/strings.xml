@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name" translatable="false">KernelSU Style UI Kit</string>
+    <string name="app_name" translatable="false">LayerBridge</string>
     <string name="home_sample_notification">This is a sample notification</string>
     <string name="home_device_model">Device model</string>
     <string name="home_android_version">Android version</string>
     <string name="home_learn_more_title">Learn about %1$s</string>
     <string name="home_learn_more_summary">Tap to view the project and documentation</string>
-    <string name="home_learn_more_url" translatable="false">https://github.com/chenaizhang/KernelSU-Style-UI-Kit</string>
+    <string name="home_learn_more_url" translatable="false">https://github.com/Lingyue166/LayerBridge</string>
     <string name="about_source_link">View source on %1$s</string>
     <string name="permission_section">Permissions</string>
     <string name="permission_ready">Core permissions are ready.</string>
