@@ -57,8 +57,8 @@ internal fun DependencyGraph(state: UiState, viewModel: MainViewModel, modifier:
         val nodeOf = { edge: PlacedEdge, start: Boolean ->
             val point = if (start) edge.points.first() else edge.points.last()
             layout.nodes.firstOrNull {
-                if (start) it.x + it.width == point.first && it.y + it.height / 2 == point.second
-                else it.x == point.first && it.y + it.height / 2 == point.second
+                if (start) it.x + it.width / 2 == point.first && it.y + it.height == point.second
+                else it.x + it.width / 2 == point.first && it.y == point.second
             }?.id
         }
         val adjacency = mutableMapOf<String, MutableSet<String>>()
@@ -181,16 +181,16 @@ internal fun DependencyGraph(state: UiState, viewModel: MainViewModel, modifier:
                     val dimAlpha = 1f - 0.85f * highlightProgress.value
                     val color = if (inTree) lineColor else lineColor.copy(alpha = dimAlpha)
                     val width = if (inTree) stroke * (1f + 0.6f * highlightProgress.value) else stroke
-                    val control = (endX - startX) / 2f
+                    val control = (endY - startY) / 2f
                     val path = Path()
                     path.moveTo(startX, startY)
-                    path.cubicTo(startX + control, startY, endX - control, endY, endX, endY)
+                    path.cubicTo(startX, startY + control, endX, endY - control, endX, endY)
                     drawPath(path, color = color, style = Stroke(width = width))
                     val arrowSize = with(density) { 7.dp.toPx() }
                     val arrow = Path().apply {
                         moveTo(startX, startY)
-                        lineTo(startX + arrowSize, startY - arrowSize * 0.6f)
-                        lineTo(startX + arrowSize, startY + arrowSize * 0.6f)
+                        lineTo(startX - arrowSize * 0.6f, startY - arrowSize)
+                        lineTo(startX + arrowSize * 0.6f, startY - arrowSize)
                         close()
                     }
                     drawPath(arrow, color = color)
