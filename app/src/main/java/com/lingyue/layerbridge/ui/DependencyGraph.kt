@@ -67,7 +67,6 @@ internal fun DependencyGraph(state: UiState, viewModel: MainViewModel, modifier:
             val to = nodeOf(edge, false)
             if (from != null && to != null) {
                 adjacency.getOrPut(from) { mutableSetOf() } += to
-                adjacency.getOrPut(to) { mutableSetOf() } += from
             }
         }
         val result = mutableSetOf(active)
@@ -208,7 +207,7 @@ internal fun DependencyGraph(state: UiState, viewModel: MainViewModel, modifier:
                         pkg = pkg,
                         metrics = metrics,
                         query = state.query,
-                        onClick = { detail = pkg },
+                        onClick = { selected = node.id },
                         onRemove = { pendingRemove = pkg },
                         highlight = when {
                             shownSet.isEmpty() -> CardHighlight.None
@@ -216,7 +215,7 @@ internal fun DependencyGraph(state: UiState, viewModel: MainViewModel, modifier:
                             else -> CardHighlight.Dimmed
                         },
                         highlightProgress = { highlightProgress.value },
-                        onDoubleTap = { selected = if (selected == node.id) null else node.id },
+                        onDoubleTap = {},
                     )
                 }
             }

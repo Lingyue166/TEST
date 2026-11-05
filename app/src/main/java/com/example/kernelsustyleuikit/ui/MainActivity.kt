@@ -249,6 +249,10 @@ private fun PackagesPager(bottomInnerPadding: androidx.compose.ui.unit.Dp) {
             if (!graphMode) {
                 top.yukonga.miuix.kmp.basic.FloatingActionButton(
                     onClick = { picker.launch(arrayOf("*/*")) },
+                    modifier = androidx.compose.ui.Modifier.padding(
+                        end = 16.dp,
+                        bottom = bottomInnerPadding + 16.dp,
+                    ),
                 ) {
                     top.yukonga.miuix.kmp.basic.Icon(
                         androidx.compose.material.icons.Icons.Rounded.Add,

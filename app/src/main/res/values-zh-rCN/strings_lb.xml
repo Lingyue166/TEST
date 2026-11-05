@@ -18,4 +18,5 @@
     <string name="lb_ok">正常</string>
     <string name="lb_missing">缺失</string>
     <string name="lb_status">环境</string>
+    <string name="lb_empty">暂无内容</string>
 </resources>

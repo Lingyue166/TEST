@@ -18,4 +18,5 @@
     <string name="lb_ok">OK</string>
     <string name="lb_missing">Missing</string>
     <string name="lb_status">Environment</string>
+    <string name="lb_empty">Empty</string>
 </resources>
